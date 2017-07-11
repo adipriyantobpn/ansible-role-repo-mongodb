@@ -1,2 +1,27 @@
 ---
 # tasks file for adipriyantobpn.repo-mongodb
+- block:
+
+  - name: include yum repository variable file
+    include_vars: "repo-{{ repo_location }}.yml"
+
+  - name: import MongoDB {{ mongodb_version }} GPG key
+    rpm_key:
+      key: "{{ mongodb_gpgkey_url.replace('file://', '') }}"
+      state: present
+    ignore_errors: "{{ ansible_check_mode }}"
+
+  - name: configure MongoDB {{ mongodb_version }} yum repository
+    yum_repository:
+      name: "{{ item.key.lower() }}"
+      description: "MongoDB - {{ mongodb_version }} for CentOS $releasever - $basearch"
+      mirrorlist: "{{ item.value.mirrorlist | default(omit) }}"
+      failovermethod: priority
+      baseurl: "{{ item.value.baseurl | default(omit) }}"
+      gpgkey: "{{ mongodb_gpgkey_url }}"
+      gpgcheck: yes
+      enabled: "{{ item.value.enabled }}"
+      file: "{{ item.value.file }}"
+      state: present
+    with_dict: "{{ mongodb_repo }}"
+  become: True

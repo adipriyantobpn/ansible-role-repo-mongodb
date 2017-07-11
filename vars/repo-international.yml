@@ -1,0 +1,10 @@
+---
+# yum variables can be checked using this command:
+#   $ python -c 'import yum, pprint; yb = yum.YumBase(); pprint.pprint(yb.conf.yumvar, width=1)'
+
+mongodb_gpgkey_url:            "https://www.mongodb.org/static/pgp/server-{{ mongodb_version }}.asc"
+mongodb_repo:
+  "mongodb-org-{{ mongodb_version }}":
+    file: "mongodb-org-{{ mongodb_version }}"
+    enabled: "{{ mongodb_enabled }}"
+    baseurl: "https://repo.mongodb.org/yum/redhat/$releasever/mongodb-org/{{ mongodb_version }}/$basearch/"

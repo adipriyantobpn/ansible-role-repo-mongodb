@@ -1,2 +1,7 @@
 ---
 # defaults file for adipriyantobpn.repo-mongodb
+
+repo_location:              international   # available options: international, vagrant
+vagrant_repo_base_dir:      "file:///vagrantshare/repo/"
+mongodb_enabled:            yes
+mongodb_version:            3.4
